@@ -2,8 +2,8 @@ const CACHE_NAME = 'cobra-downloader-v1';
 const urlsToCache = [
     '/index.html',
     '/manifest.json',
-    '/images/icon-192.png',
-    '/images/icon-512.png',
+    '/https://i.ibb.co/x87Tgrby/photo-2025-04-16-19-26-23.jpg',
+    '/https://i.ibb.co/x87Tgrby/photo-2025-04-16-19-26-23.jpg',
     'https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap'
 ];
 

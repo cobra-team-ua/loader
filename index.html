@@ -1,0 +1,663 @@
+<DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://i.ibb.co/ZzcCnZfq/photo-2025-04-16-19-26-23-removebg-preview.png">
+    <title>TikTok Video Downloader - Cobra Team</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #000;
+            color: #fff;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Фон с долларами */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .dollar {
+            position: absolute;
+            color: #00ff88;
+            font-size: 5rem;
+            opacity: 0.2;
+            animation: float 12s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-100px) scale(1.3); }
+        }
+
+        /* Название и логотип */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .team-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #ff2d55;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 10;
+            letter-spacing: 2px;
+        }
+
+        /* Эффект молний */
+        .team-title::before,
+        .team-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            opacity: 0.6;
+            animation: lightning 1.8s infinite;
+            z-index: -1;
+        }
+
+        .team-title::before {
+            top: -8px;
+            transform: rotate(3deg);
+        }
+
+        .team-title::after {
+            bottom: -8px;
+            transform: rotate(-3deg);
+        }
+
+        @keyframes lightning {
+            0%, 100% {
+                opacity: 0.3;
+                transform: translateX(-5px) scale(1);
+                box-shadow: none;
+            }
+            50% {
+                opacity: 0.9;
+                transform: translateX(5px) scale(1.05);
+                box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        .logo {
+            width: 65px;
+            height: 65px;
+            margin-right: 1rem;
+            z-index: 10;
+        }
+
+        /* Контейнер */
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 10;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-3px);
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .tab-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .tab-btn.active {
+            background: #ff2d55;
+        }
+
+        .section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .section.active {
+            display: block;
+            opacity: 1;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            outline: none;
+            transition: background 0.3s;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        button {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            background: #ff2d55;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background: #e02448;
+            transform: scale(1.03);
+        }
+
+        button:disabled {
+            background: #444;
+            cursor: not-allowed;
+        }
+
+        #result, #bulkResult {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .success {
+            color: #69c9d0;
+        }
+
+        .error {
+            color: #ff6b6b;
+        }
+
+        .loading {
+            color: #69c9d0;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 1.5rem;
+            max-width: 90%;
+            max-height: 90%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content video {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background: #ff2d55;
+            color: #fff;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .modal-btn:hover {
+            background: #e02448;
+            transform: scale(1.05);
+        }
+
+        /* Кнопка "Узнать больше" */
+        .team-info {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .team-info button {
+            background: #fff1;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .team-info button:hover {
+            background: #00cc66;
+        }
+
+        .team-info p {
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            color: #fff;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.2rem;
+                max-width: 90vw;
+            }
+
+            .header {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .team-title {
+                font-size: 2rem;
+            }
+
+            .team-title::before {
+                top: -6px;
+            }
+
+            .team-title::after {
+                bottom: -6px;
+            }
+
+            .logo {
+                width: 40px;
+                height: 40px;
+                margin-right: 0.5rem;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            .tab-btn {
+                font-size: 0.85rem;
+                padding: 6px 12px;
+            }
+
+            input, button {
+                font-size: 0.9rem;
+                padding: 9px;
+            }
+
+            #result, #bulkResult {
+                font-size: 0.85rem;
+            }
+
+            .modal-content video {
+                max-height: 250px;
+            }
+
+            .dollar {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Фон с долларами -->
+    <div class="background" id="background"></div>
+
+    <!-- Название и логотип -->
+    <div class="header">
+        <img src="https://i.ibb.co/ZzcCnZfq/photo-2025-04-16-19-26-23-removebg-preview.png" alt="Cobra Team Logo" class="logo">
+        <div class="team-title">COBRA TEAM</div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="container">
+        <h1>Скачать TikTok видео</h1>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('single')">Одиночный режим</button>
+            <button class="tab-btn" onclick="switchTab('bulk')">Массовый режим</button>
+        </div>
+
+        <!-- Одиночный режим -->
+        <div id="singleSection" class="section active">
+            <input type="text" id="tiktokUrl" placeholder="Вставьте ссылку на видео" autocomplete="off">
+            <button id="downloadBtn" onclick="downloadSingleVideo()">Скачать</button>
+            <div id="result"></div>
+        </div>
+
+        <!-- Массовый режим -->
+        <div id="bulkSection" class="section">
+            <input type="text" class="bulk-url" placeholder="Ссылка 1" autocomplete="off">
+            <input type="text" class="bulk-url" placeholder="Ссылка 2" autocomplete="off">
+            <input type="text" class="bulk-url" placeholder="Ссылка 3" autocomplete="off">
+            <input type="text" class="bulk-url" placeholder="Ссылка 4" autocomplete="off">
+            <input type="text" class="bulk-url" placeholder="Ссылка 5" autocomplete="off">
+            <button id="bulkDownloadBtn" onclick="downloadBulkVideos()">Скачать все</button>
+            <div id="bulkResult"></div>
+        </div>
+    </div>
+
+    <!-- Кнопка "Узнать больше" -->
+    <div class="team-info">
+        <p>Начни зарабатывать $825+ на Tik-Tok!<br><br></p>
+        <button onclick="window.location.href='https://tik-tok.free.nf'">Узнать больше о команде</button>
+        <p>Туториалы | Обучениие | Инструменты</p>
+        <p>Менторство | Команда | Зарплата</p>
+    </div>
+
+    <!-- Модальное окно -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <video id="modalVideo" controls></video>
+            <div class="modal-buttons">
+                <button class="modal-btn" onclick="closeModal()">Закрыть</button>
+                <button class="modal-btn" onclick="downloadAnother()">Скачать ещё одно</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Хранилище текущего blobUrl
+        let currentBlobUrl = null;
+
+        // Инициализация фона с долларами
+        function initBackground() {
+            const background = document.getElementById('background');
+            for (let i = 0; i < 15; i++) {
+                const dollar = document.createElement('div');
+                dollar.className = 'dollar';
+                dollar.innerText = '$';
+                dollar.style.left = `${Math.random() * 100}vw`;
+                dollar.style.top = `${Math.random() * 100}vh`;
+                dollar.style.opacity = 0.1 + Math.random() * 0.3;
+                dollar.style.animationDuration = `${10 + Math.random() * 5}s`;
+                dollar.style.animationDelay = `${Math.random() * 5}s`;
+                dollar.style.transform = `scale(${0.8 + Math.random() * 1.2})`;
+                background.appendChild(dollar);
+            }
+        }
+
+        initBackground();
+
+        // Переключение вкладок
+        function switchTab(tab) {
+            const singleSection = document.getElementById('singleSection');
+            const bulkSection = document.getElementById('bulkSection');
+            const singleBtn = document.querySelector('.tab-btn:nth-child(1)');
+            const bulkBtn = document.querySelector('.tab-btn:nth-child(2)');
+
+            if (tab === 'single') {
+                singleSection.classList.add('active');
+                bulkSection.classList.remove('active');
+                singleBtn.classList.add('active');
+                bulkBtn.classList.remove('active');
+            } else {
+                singleSection.classList.remove('active');
+                bulkSection.classList.add('active');
+                singleBtn.classList.remove('active');
+                bulkBtn.classList.add('active');
+            }
+        }
+
+        // Управление модальным окном
+        function showModal(videoUrl) {
+            const modal = document.getElementById('modal');
+            const modalVideo = document.getElementById('modalVideo');
+            modalVideo.src = videoUrl;
+            modal.classList.add('active');
+            // Попробуем загрузить видео
+            modalVideo.load();
+            modalVideo.play().catch(error => {
+                console.error('Ошибка воспроизведения:', error);
+            });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            const modalVideo = document.getElementById('modalVideo');
+            modalVideo.src = '';
+            modal.classList.remove('active');
+            // Освобождаем текущий blobUrl
+            if (currentBlobUrl) {
+                URL.revokeObjectURL(currentBlobUrl);
+                currentBlobUrl = null;
+            }
+        }
+
+        function downloadAnother() {
+            closeModal();
+            document.getElementById('tiktokUrl').value = '';
+            Array.from(document.querySelectorAll('.bulk-url')).forEach(input => input.value = '');
+        }
+
+        // Функция для автоматического скачивания
+        async function triggerDownload(videoUrl, filename) {
+            try {
+                const response = await fetch(videoUrl, {
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36'
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error(`Не удалось загрузить видео: ${response.status}`);
+                }
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(new Blob([blob], { type: 'video/mp4' }));
+                // Сохраняем blobUrl для предпросмотра
+                currentBlobUrl = blobUrl;
+                // Инициируем скачивание
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                return blobUrl; // Возвращаем для предпросмотра
+            } catch (error) {
+                throw new Error(`Ошибка загрузки: ${error.message}`);
+            }
+        }
+
+        // Скачивание одного видео
+        async function downloadSingleVideo() {
+            const urlInput = document.getElementById('tiktokUrl').value.trim();
+            const resultDiv = document.getElementById('result');
+            const downloadBtn = document.getElementById('downloadBtn');
+            resultDiv.innerHTML = '';
+            downloadBtn.disabled = true;
+
+            const tiktokRegex = /^https?:\/\/(www\.)?(tiktok\.com|vm\.tiktok\.com)\/.+$/;
+            if (!tiktokRegex.test(urlInput)) {
+                resultDiv.innerHTML = '<p class="error">Введите корректную TikTok-ссылку</p>';
+                downloadBtn.disabled = false;
+                return;
+            }
+
+            try {
+                const apiUrl = `https://tikwm.com/api/?url=${encodeURIComponent(urlInput)}&count=1&hd=1`;
+                resultDiv.innerHTML = '<p class="loading">Загрузка...</p>';
+
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
+                        'Referer': 'https://tikwm.com/',
+                        'Origin': 'https://tikwm.com'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ошибка: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                if (data.data && data.data.play) {
+                    const blobUrl = await triggerDownload(data.data.play, 'tiktok_video.mp4');
+                    showModal(blobUrl);
+                    resultDiv.innerHTML = '<p class="success">Видео скачано!</p>';
+                } else {
+                    resultDiv.innerHTML = '<p class="error">Не удалось получить видео. Проверьте ссылку.</p>';
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                resultDiv.innerHTML = `<p class="error">Ошибка: ${error.message}</p>`;
+            } finally {
+                downloadBtn.disabled = false;
+            }
+        }
+
+        // Скачивание нескольких видео
+        async function downloadBulkVideos() {
+            const urlInputs = document.querySelectorAll('.bulk-url');
+            const resultDiv = document.getElementById('bulkResult');
+            const downloadBtn = document.getElementById('bulkDownloadBtn');
+            resultDiv.innerHTML = '';
+            downloadBtn.disabled = true;
+
+            const tiktokRegex = /^https?:\/\/(www\.)?(tiktok\.com|vm\.tiktok\.com)\/.+$/;
+            const validUrls = Array.from(urlInputs)
+                .map(input => input.value.trim())
+                .filter(url => url && tiktokRegex.test(url));
+
+            if (validUrls.length === 0) {
+                resultDiv.innerHTML = '<p class="error">Введите хотя бы одну корректную TikTok-ссылку</p>';
+                downloadBtn.disabled = false;
+                return;
+            }
+
+            resultDiv.innerHTML = '<p class="loading">Обработка ссылок...</p>';
+            const statusMessages = [];
+
+            for (let i = 0; i < validUrls.length; i++) {
+                const url = validUrls[i];
+                statusMessages.push(`<p>Ссылка ${i + 1}: <span class="loading">Загрузка...</span></p>`);
+                resultDiv.innerHTML = statusMessages.join('');
+
+                try {
+                    const apiUrl = `https://tikwm.com/api/?url=${encodeURIComponent(url)}&count=1&hd=1`;
+                    const response = await fetch(apiUrl, {
+                        headers: {
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
+                            'Referer': 'https://tikwm.com/',
+                            'Origin': 'https://tikwm.com'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP ошибка: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    if (data.data && data.data.play) {
+                        // Освобождаем предыдущий blobUrl перед новым
+                        if (currentBlobUrl) {
+                            URL.revokeObjectURL(currentBlobUrl);
+                            currentBlobUrl = null;
+                        }
+                        const blobUrl = await triggerDownload(data.data.play, `tiktok_video_${i + 1}.mp4`);
+                        statusMessages[i] = `<p>Ссылка ${i + 1}: <span class="success">Видео скачано!</span></p>`;
+                        showModal(blobUrl);
+                        resultDiv.innerHTML = statusMessages.join('');
+                        await new Promise(resolve => setTimeout(resolve, 3000)); // Пауза для просмотра
+                    } else {
+                        statusMessages[i] = `<p>Ссылка ${i + 1}: <span class="error">Не удалось скачать</span></p>`;
+                    }
+                } catch (error) {
+                    console.error(`Ошибка для ссылки ${i + 1}:`, error);
+                    statusMessages[i] = `<p>Ссылка ${i + 1}: <span class="error">Ошибка: ${error.message}</span></p>`;
+                }
+
+                resultDiv.innerHTML = statusMessages.join('');
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Пауза 1 сек
+            }
+
+            downloadBtn.disabled = false;
+        }
+    </script>
+</body>
+</html>

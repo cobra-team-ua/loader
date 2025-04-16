@@ -1,10 +1,43 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="https://i.ibb.co/ZzcCnZfq/photo-2025-04-16-19-26-23-removebg-preview.png">
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Скачивайте TikTok видео без водяных знаков с помощью Cobra Team. Быстро, просто и бесплатно!">
+    <meta name="keywords" content="TikTok downloader, скачать TikTok видео, Cobra Team, TikTok без водяного знака">
+    <meta name="author" content="Cobra Team">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph (для соцсетей) -->
+    <meta property="og:title" content="TikTok Video Downloader - Cobra Team">
+    <meta property="og:description" content="Скачивайте TikTok видео без водяных знаков быстро и бесплатно!">
+    <meta property="og:image" content="/images/icon-512.png">
+    <meta property="og:url" content="https://your-domain.com">
+    <meta property="og:type" content="website">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="TikTok Video Downloader - Cobra Team">
+    <meta name="twitter:description" content="Скачивайте TikTok видео без водяных знаков быстро и бесплатно!">
+    <meta name="twitter:image" content="/images/icon-512.png">
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/images/icon-192.png">
+    <link rel="icon" type="image/png" href="/images/icon-192.png">
     <title>TikTok Video Downloader - Cobra Team</title>
+    <!-- Структурированные данные JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "TikTok Video Downloader",
+        "description": "Инструмент для скачивания TikTok видео без водяных знаков от Cobra Team",
+        "url": "https://your-domain.com",
+        "image": "/images/icon-512.png",
+        "applicationCategory": "Utility",
+        "operatingSystem": "All"
+    }
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
@@ -24,7 +57,6 @@
             position: relative;
         }
 
-        /* Фон с долларами */
         .background {
             position: fixed;
             top: 0;
@@ -48,7 +80,6 @@
             50% { transform: translateY(-100px) scale(1.3); }
         }
 
-        /* Название и логотип */
         .header {
             display: flex;
             align-items: center;
@@ -68,7 +99,6 @@
             letter-spacing: 2px;
         }
 
-        /* Эффект молний */
         .team-title::before,
         .team-title::after {
             content: '';
@@ -112,7 +142,6 @@
             z-index: 10;
         }
 
-        /* Контейнер */
         .container {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(8px);
@@ -246,7 +275,6 @@
             50% { opacity: 0.5; }
         }
 
-        /* Модальное окно */
         .modal {
             display: none;
             position: fixed;
@@ -307,7 +335,6 @@
             transform: scale(1.05);
         }
 
-        /* Кнопка "Узнать больше" */
         .team-info {
             margin-top: 2rem;
             text-align: center;
@@ -327,6 +354,25 @@
             margin-top: 0.5rem;
             font-size: 1rem;
             color: #fff;
+        }
+
+        .install-btn {
+            margin-top: 1rem;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            background: #00cc66;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            display: none;
+        }
+
+        .install-btn:hover {
+            background: #00b359;
+            transform: scale(1.03);
         }
 
         @media (max-width: 480px) {
@@ -387,66 +433,58 @@
     </style>
 </head>
 <body>
-    <!-- Фон с долларами -->
     <div class="background" id="background"></div>
 
-    <!-- Название и логотип -->
-    <div class="header">
-        <img src="https://i.ibb.co/ZzcCnZfq/photo-2025-04-16-19-26-23-removebg-preview.png" alt="Cobra Team Logo" class="logo">
-        <div class="team-title">COBRA TEAM</div>
-    </div>
+    <header class="header">
+        <img src="/images/icon-192.png" alt="Cobra Team Logo" class="logo">
+        <h1 class="team-title">COBRA TEAM</h1>
+    </header>
 
-    <!-- Основной контент -->
-    <div class="container">
-        <h1>Скачать TikTok видео</h1>
+    <main class="container">
+        <h2>Скачать TikTok видео</h2>
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('single')">Одиночный режим</button>
-            <button class="tab-btn" onclick="switchTab('bulk')">Массовый режим</button>
+            <button class="tab-btn active" onclick="switchTab('single')" aria-label="Одиночный режим скачивания">Одиночный режим</button>
+            <button class="tab-btn" onclick="switchTab('bulk')" aria-label="Массовый режим скачивания">Массовый режим</button>
         </div>
 
-        <!-- Одиночный режим -->
-        <div id="singleSection" class="section active">
-            <input type="text" id="tiktokUrl" placeholder="Вставьте ссылку на видео" autocomplete="off">
-            <button id="downloadBtn" onclick="downloadSingleVideo()">Скачать</button>
-            <div id="result"></div>
-        </div>
+        <section id="singleSection" class="section active">
+            <input type="text" id="tiktokUrl" placeholder="Вставьте ссылку на видео" autocomplete="off" aria-label="Ссылка на TikTok видео">
+            <button id="downloadBtn" onclick="downloadSingleVideo()" aria-label="Скачать одно видео">Скачать</button>
+            <div id="result" aria-live="polite"></div>
+        </section>
 
-        <!-- Массовый режим -->
-        <div id="bulkSection" class="section">
-            <input type="text" class="bulk-url" placeholder="Ссылка 1" autocomplete="off">
-            <input type="text" class="bulk-url" placeholder="Ссылка 2" autocomplete="off">
-            <input type="text" class="bulk-url" placeholder="Ссылка 3" autocomplete="off">
-            <input type="text" class="bulk-url" placeholder="Ссылка 4" autocomplete="off">
-            <input type="text" class="bulk-url" placeholder="Ссылка 5" autocomplete="off">
-            <button id="bulkDownloadBtn" onclick="downloadBulkVideos()">Скачать все</button>
-            <div id="bulkResult"></div>
-        </div>
-    </div>
+        <section id="bulkSection" class="section">
+            <input type="text" class="bulk-url" placeholder="Ссылка 1" autocomplete="off" aria-label="Ссылка на TikTok видео 1">
+            <input type="text" class="bulk-url" placeholder="Ссылка 2" autocomplete="off" aria-label="Ссылка на TikTok видео 2">
+            <input type="text" class="bulk-url" placeholder="Ссылка 3" autocomplete="off" aria-label="Ссылка на TikTok видео 3">
+            <input type="text" class="bulk-url" placeholder="Ссылка 4" autocomplete="off" aria-label="Ссылка на TikTok видео 4">
+            <input type="text" class="bulk-url" placeholder="Ссылка 5" autocomplete="off" aria-label="Ссылка на TikTok видео 5">
+            <button id="bulkDownloadBtn" onclick="downloadBulkVideos()" aria-label="Скачать все видео">Скачать все</button>
+            <div id="bulkResult" aria-live="polite"></div>
+        </section>
+    </main>
 
-    <!-- Кнопка "Узнать больше" -->
-    <div class="team-info">
+    <footer class="team-info">
         <p>Начни зарабатывать $825+ на Tik-Tok!<br><br></p>
-        <button onclick="window.location.href='https://tik-tok.free.nf'">Узнать больше о команде</button>
-        <p>Туториалы | Обучениие | Инструменты</p>
+        <button onclick="window.location.href='https://tik-tok.free.nf'" aria-label="Узнать больше о Cobra Team">Узнать больше о команде</button>
+        <p>Туториалы | Обучение | Инструменты</p>
         <p>Менторство | Команда | Зарплата</p>
-    </div>
+        <button class="install-btn" id="installBtn" aria-label="Установить приложение">Установить приложение</button>
+    </footer>
 
-    <!-- Модальное окно -->
     <div id="modal" class="modal">
         <div class="modal-content">
-            <video id="modalVideo" controls></video>
+            <video id="modalVideo" controls aria-label="Предпросмотр загруженного видео"></video>
             <div class="modal-buttons">
-                <button class="modal-btn" onclick="closeModal()">Закрыть</button>
-                <button class="modal-btn" onclick="downloadAnother()">Скачать ещё одно</button>
+                <button class="modal-btn" onclick="closeModal()" aria-label="Закрыть модальное окно">Закрыть</button>
+                <button class="modal-btn" onclick="downloadAnother()" aria-label="Скачать ещё одно видео">Скачать ещё одно</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Хранилище текущего blobUrl
         let currentBlobUrl = null;
 
-        // Инициализация фона с долларами
         function initBackground() {
             const background = document.getElementById('background');
             for (let i = 0; i < 15; i++) {
@@ -465,7 +503,6 @@
 
         initBackground();
 
-        // Переключение вкладок
         function switchTab(tab) {
             const singleSection = document.getElementById('singleSection');
             const bulkSection = document.getElementById('bulkSection');
@@ -485,13 +522,11 @@
             }
         }
 
-        // Управление модальным окном
         function showModal(videoUrl) {
             const modal = document.getElementById('modal');
             const modalVideo = document.getElementById('modalVideo');
             modalVideo.src = videoUrl;
             modal.classList.add('active');
-            // Попробуем загрузить видео
             modalVideo.load();
             modalVideo.play().catch(error => {
                 console.error('Ошибка воспроизведения:', error);
@@ -503,7 +538,6 @@
             const modalVideo = document.getElementById('modalVideo');
             modalVideo.src = '';
             modal.classList.remove('active');
-            // Освобождаем текущий blobUrl
             if (currentBlobUrl) {
                 URL.revokeObjectURL(currentBlobUrl);
                 currentBlobUrl = null;
@@ -516,7 +550,6 @@
             Array.from(document.querySelectorAll('.bulk-url')).forEach(input => input.value = '');
         }
 
-        // Функция для автоматического скачивания
         async function triggerDownload(videoUrl, filename) {
             try {
                 const response = await fetch(videoUrl, {
@@ -529,22 +562,19 @@
                 }
                 const blob = await response.blob();
                 const blobUrl = URL.createObjectURL(new Blob([blob], { type: 'video/mp4' }));
-                // Сохраняем blobUrl для предпросмотра
                 currentBlobUrl = blobUrl;
-                // Инициируем скачивание
                 const link = document.createElement('a');
                 link.href = blobUrl;
                 link.download = filename;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-                return blobUrl; // Возвращаем для предпросмотра
+                return blobUrl;
             } catch (error) {
                 throw new Error(`Ошибка загрузки: ${error.message}`);
             }
         }
 
-        // Скачивание одного видео
         async function downloadSingleVideo() {
             const urlInput = document.getElementById('tiktokUrl').value.trim();
             const resultDiv = document.getElementById('result');
@@ -591,7 +621,6 @@
             }
         }
 
-        // Скачивание нескольких видео
         async function downloadBulkVideos() {
             const urlInputs = document.querySelectorAll('.bulk-url');
             const resultDiv = document.getElementById('bulkResult');
@@ -634,7 +663,6 @@
 
                     const data = await response.json();
                     if (data.data && data.data.play) {
-                        // Освобождаем предыдущий blobUrl перед новым
                         if (currentBlobUrl) {
                             URL.revokeObjectURL(currentBlobUrl);
                             currentBlobUrl = null;
@@ -643,7 +671,7 @@
                         statusMessages[i] = `<p>Ссылка ${i + 1}: <span class="success">Видео скачано!</span></p>`;
                         showModal(blobUrl);
                         resultDiv.innerHTML = statusMessages.join('');
-                        await new Promise(resolve => setTimeout(resolve, 3000)); // Пауза для просмотра
+                        await new Promise(resolve => setTimeout(resolve, 3000));
                     } else {
                         statusMessages[i] = `<p>Ссылка ${i + 1}: <span class="error">Не удалось скачать</span></p>`;
                     }
@@ -653,11 +681,52 @@
                 }
 
                 resultDiv.innerHTML = statusMessages.join('');
-                await new Promise(resolve => setTimeout(resolve, 1000)); // Пауза 1 сек
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
 
             downloadBtn.disabled = false;
         }
+
+        // Регистрация сервис-воркера
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    console.log('Service Worker зарегистрирован:', registration);
+                }).catch(error => {
+                    console.error('Ошибка регистрации Service Worker:', error);
+                });
+            });
+        }
+
+        // Обработка кнопки установки PWA
+        let deferredPrompt = null;
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(choiceResult => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Пользователь установил приложение');
+                    } else {
+                        console.log('Пользователь отклонил установку');
+                    }
+                    deferredPrompt = null;
+                    installBtn.style.display = 'none';
+                });
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA установлен');
+            installBtn.style.display = 'none';
+        });
     </script>
 </body>
 </html>
